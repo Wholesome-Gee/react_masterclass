@@ -160,3 +160,50 @@ package.json의 scripts에 `"deploy":"gh-pages -d build"` , `"predeploy":"npm ru
 
 # 리액트 마스터클래스 (노마드코더) 🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
+## #2 STYLED COMPONENTS
+스타일 컴포넌트 로직 작성  
+1. 컴포넌트를 선언 `const 컴포넌트이름`
+2. 컴포넌트에 styled-components로 html 태그 부여 `const 컴포넌트이름 = styled.div`
+3. 백틱기호를 사용하여 스타일링 
+    ```js
+    const Box = styled.div`width:100, height:100, background-color:teal`;
+    ```
+4. JSX에 컴포넌트 사용
+
+스타일 컴포넌트가 알아서 클래스명을 붙혀준다. (ex) class="sc-jSgvazq"
+
+---
+### 2.1 Our First Styled Component
+- `npm i styled-components`  
+- `import styled from 'styled-components';`
+- styled-components 샘플 베이스 코드
+
+```js
+// import
+import styled from 'styled-components'
+
+// styled-components로 html, css 정의
+const Father = styled.div`
+  display: flex;
+`
+const BoxOne = styled.div`
+  background-color: teal;
+  width: 100px;
+  height: 100px;
+`
+const Text = styled.span`
+  color: white;
+`
+export default function App() {
+  return (
+    <Father>
+      <BoxOne>
+        <Text>Hello</Text>
+      </BoxOne>
+      <BoxTwo/>
+    </Father>
+  )
+}
+```
+
+
