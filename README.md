@@ -552,11 +552,12 @@ export default function App() {
 - 진행중인 프로젝트에 설치할 경우 
   - `npm i --save typescript @types/node @types/react @types/react-dom @types/jest`
 - ts에서 js로 만들어진 library를 설치할 때
-  - `npm i --svae-dev @types/라이브러리`
+  - `npm i --save-dev @types/라이브러리`
 - 진행중인 프로젝트를 vite로 만들었을 경우
   - `npm i --save typescript @types/node @types/react @types/react-dom @types/jest`
   - `rpx tsc --init`
   - tsconfig.json의 "compilerOptions" 내부에 `"jsx":"react-jsx"` 추가
+  - `npm i --save-dev @types/styled-components`
   - 모든 파일 확장자를 tsx로 변경
   - main.tsx에서 `createRoot(document.getElementById('root')).render(` 이부분을
     `createRoot(document.getElementById('root')!).render(` 이렇게 교체 (!만 추가)
@@ -653,8 +654,64 @@ state를 type하는 방법
   `const [value, setValue] = useState<number|string>(1)`  
   이와 같이 지정해줄 수 있다.
 - 초기값을 설정안하면 undefined type이 된다.
+---
 ### 3.5 Form (event)
 이벤트리스너의 event에 type하는 방법
 - `const onChange = (event:React.FormEvent<HTMLInputElement>) => { ... }`
   - input에 이벤트리스너를 걸었으면 HTMLInputElement,   
     form에 이벤트리스너를 걸었으면 HTMLFormElement
+---
+### 3.6 Themes
+Themes(다크모드, 라이트모드)를 typeScript로 설정하는방법
+1. styled.d.ts 파일 생성
+    ```tsx
+    import 'styled-components';
+    declare module 'styled-components' {
+      export interface DefaultTheme {
+        textColor: string;
+        bgColor: string;
+        btnColor: string;
+      }
+    }
+    ```
+2. theme.ts 파일 생성
+    ```tsx
+    import { DefaultTheme } from "styled-components";
+    export const lightTheme:DefaultTheme = {
+      textColor: "#333",
+      bgColor: "#eee",
+      btnColor: "tomato"
+    }
+    export const darkTheme:DefaultTheme = {
+      textColor: "#eee",
+      bgColor: "#333",
+      btnColor: "teal"
+    }
+    ```
+3. main.tsx(index.tsx)에 ThemeProvider 설정 후 themes import
+    ```tsx
+    import { StrictMode } from 'react'
+    import { createRoot } from 'react-dom/client'
+    import './index.css'
+    import App from './App'
+    import { ThemeProvider } from 'styled-components'
+    import { darkTheme, lightTheme } from './theme'
+
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <ThemeProvider theme={lightTheme}>
+          <App />
+        </ThemeProvider>
+      </StrictMode>,
+    )
+    ```
+4. styled-component에서 theme 사용
+    ```tsx
+    const Container = styled.div`
+      background-color: ${props=>props.theme.bgColor};
+    `
+    const Button = styled.button`
+      background-color: ${props=>props.theme.btnColor};
+      color: ${props=>props.theme.textColor};
+    `
+    ```
