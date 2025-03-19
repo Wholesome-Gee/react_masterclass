@@ -205,5 +205,49 @@ export default function App() {
   )
 }
 ```
+---
+### 2.2 Adapting and Extending
+- props를 받아서 같은 styled-component이지만 다른 스타일링을 줄 수 있다.
+  ```js
+  import styled from 'styled-components'
 
+  const Box = styled.div`
+    background-color: ${(props)=>props.bgColor};
+    width: 100px;
+    height: 100px;
+  `
 
+  export default function App() {
+    return (
+      <div>
+        <Box bgColor='teal'/>
+        <Box bgColor='tomato'/>
+      </div>
+    )
+  }
+  ```
+
+- 중괄호를 이용한 styled-component의 상속
+  ```js
+  import styled from 'styled-components'
+
+  const Box = styled.div`
+    background-color: ${(props)=>props.bgColor};
+    width: 100px;
+    height: 100px;
+  `
+
+  const Circle = styled(Box)`
+    border-radius:50%
+  `
+
+  export default function App() {
+    return (
+      <div>
+        <Box bgColor='teal'/>
+        <Box bgColor='tomato'/>
+        <Circle bgColor='orange'/>
+      </div>
+    )
+  }
+  ```
