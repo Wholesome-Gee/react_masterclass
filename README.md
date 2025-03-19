@@ -645,3 +645,11 @@ props의 type에 옵셔널, 기본값 설정하기
     }
     ```
 --- 
+### 3.4 State
+state를 type하는 방법
+- useState로 state의 초기값을 설정하면  
+  typeScript는 초기값을 보고 해당 state의 type을 자동으로 지정해준다.
+- 만약, 초기값과 다른 type을 state에 저장해야하는 경우  
+  `const [value, setValue] = useState<number|string>(1)`  
+  이와 같이 지정해줄 수 있다.
+- 초기값을 설정안하면 undefined type이 된다.
