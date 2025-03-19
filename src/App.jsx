@@ -1,5 +1,14 @@
 
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const animation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
 
 const Header = styled.header`
   display: flex;
@@ -25,6 +34,25 @@ const Input = styled.input.attrs({required:true})`
   width:100px;
   background-color: beige;
 `
+const Count = styled.span`
+  font-size: 3rem;
+`
+const SmileBox = styled(Square)`
+  animation: ${animation} 1s ease-in-out infinite;
+  &:hover {
+    border-radius: 50%
+  }
+  span {
+    font-size: 2rem;
+  }
+  ${Count} {
+    font-size: 2rem;
+    color: red;
+  }
+`
+
+
+// App component
 
 function App() {
   return (
@@ -37,11 +65,10 @@ function App() {
       <Button bg_color='teal'>Click</Button>
       <Button bg_color='tomato'as='a' href='https://naver.com'>Go to Naver</Button>
       <Input/>
-      <Input/>
-      <Input/>
-      <Input/>
-      <Input/>
-      <Input/>
+      <SmileBox bg_color='teal'>
+        <span>☺️</span>
+        <Count as='p'>30</Count>
+      </SmileBox>
     </Header>
   )
 }

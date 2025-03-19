@@ -251,7 +251,7 @@ export default function App() {
     )
   }
   ```
-  ---
+---
 ### 2.3 'As' and Attrs
 - as 속성으로 styled-component의 html 태그를 변경할 수 있다.
 - styled-component의 속성에 as='html태그'를 추가하면 해당 styled-component의 html태그가 변경됨.
@@ -302,3 +302,73 @@ export default function App() {
 
   export default App
   ```
+---
+### 2.4 Animations and Pseudo Selectors
+- styled-components로 animation 구현하는 방법
+  - `import styled, { keyframes } from 'styled-components'`
+  - styled-components 보다 윗 줄에 animation 작성성
+    ```js
+    import styled, { keyframes } from 'styled-components'
+
+    // 360도 회전하는 애니메이션을 animation에 정의
+    const animation = keyframes`
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    `
+    const Square = styled.div`
+      background-color: ${props=>props.bg_color};
+      width: 100px;
+      height: 100px;
+      animation: ${animation} 1s ease-in-out infinite;
+    `
+
+    export default function App() {
+      return (
+        <>
+          <Square bg_color='tomato'/>
+        </>
+      )
+    }
+    ```
+- Psuedo Seclctors 사용하는 방법 ( 가상 요소 선택자 )
+  - nested 사용가능
+  - '&'를 이용해서 Psuedo Selectiors 사용가능
+    ```js
+    import styled from 'styled-components'
+    const Count = styled.span`
+      font-size: 1rem;
+    `
+    const SmileBox = styled.div`
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+
+      span {
+        font-size: 32px;
+      }
+
+      &:hover {
+        border-radius: 50%
+      }
+
+      ${Count} {
+        font-size: 32px;
+        color: red;
+      }
+    `
+
+    export default function App() {
+      return (
+        <>
+          <SmileBox>
+            <span>☺️</span>
+            <Count as='p'>30</Count>
+          </SmileBox>
+        </>
+      )
+    }
+    ```
