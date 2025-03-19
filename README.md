@@ -303,7 +303,7 @@ export default function App() {
   export default App
   ```
 ---
-### 2.4 Animations and Pseudo Selectors
+### 2.4~2.5 Animations and Pseudo Selectors 
 - styled-components로 animation 구현하는 방법
   - `import styled, { keyframes } from 'styled-components'`
   - styled-components 보다 윗 줄에 animation 작성성
@@ -372,3 +372,220 @@ export default function App() {
       )
     }
     ```
+---
+### 2.7 Themes (다크모드, 라이트모드 설정)
+- main.jsx(index.jsx)에 `import {ThemeProvider} from 'styled-components' 추가  
+- `<App/>`을 `<ThemeProvider theme={darkTheme}></ThemeProvider>`로 감싸준다.
+- theme 정의 `const darkTheme = { textColor: "#eee", bgColor: "#333" }`
+- <App/> 혹은 theme을 사용할 컴포넌트에서 theme을 적용시킨다.
+  ```js
+  // main.jsx
+  ...
+  import { ThemeProvider } from 'styled-components'
+
+  const darkTheme = {
+    textColor:"#eee",
+    bgColor:"#333",
+  }
+
+  const lightTheme = {
+    textColor:"#333",
+    bgColor:"#eee",
+  }
+
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <ThemeProvider theme={darkTheme}>
+        <App />
+      </ThemeProvider>
+    </StrictMode>,
+  )
+
+  // App.jsx
+  import styled from 'styled-components'
+
+  const Title = styled.h1`
+    background-color: ${(props)=>props.theme.bgColor};
+    color: ${(props)=>props.theme.textColor};
+  `
+
+  export default function App() {
+    return (
+      <Header>
+        <Title>hello</Title>
+      </Header>
+    )
+  }
+  ```
+---
+### 코드 정리
+```js
+// main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { ThemeProvider } from 'styled-components'
+
+const darkTheme = {
+  textColor:"#eee",
+  bgColor:"#333",
+}
+
+const lightTheme = {
+  textColor:"#333",
+  bgColor:"#eee",
+}
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <ThemeProvider theme={darkTheme}>
+      <App />
+    </ThemeProvider>
+  </StrictMode>,
+)
+
+// App.jsx
+import styled, { keyframes } from 'styled-components' 
+
+// 애니메이션 설정 (SmileBox에서 사용)
+const animation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+
+// styled-component 기본형 <Header/>
+const Header = styled.header`
+  display: flex;
+  flex-direction: column;
+`
+
+// styled-component props 설정 <Square bg_color="teal"/>
+const Square = styled.div`
+  background-color: ${props=>props.bg_color};
+  width: 100px;
+  height: 100px;
+`
+
+// styled-component 상속(extend) <Circle bg_color="tomato"/>
+const Circle = styled(Square)`
+  border-radius: 50%
+`
+
+// styled-component 안에 작성된 styled-component <Square><Text/></Square>
+const Text = styled.span`
+  color: white;
+`
+
+// styled-component로 작성된 button을 as키워드를 사용하여 a태그로 변환
+// <Button bg_color='tomato' as='a' href='/'/>
+const Button = styled.button`
+  background-color: ${(props)=>props.bg_color};
+  color: white;
+  width: 100px;
+`
+
+// styled-component에 attrs를 활용하여 html태그의 속성 부여하기 
+const Input = styled.input.attrs({required:true})`
+  width:100px;
+  background-color: beige;
+`
+
+// styled-component 내부에 styled-component를 선택자로 지정하기
+// 
+const Count = styled.span`
+  font-size: 2rem;
+`
+
+// styled-component 내부에 pseudo Selector 정의 span{}, &:hover{}...
+const SmileBox = styled(Square)`
+  animation: ${animation} 1s ease-in-out infinite;
+  &:hover {
+    border-radius: 50%
+  }
+  span {
+    font-size: 2rem;
+  }
+  ${Count} {
+    font-size: 2rem;
+    color: red;
+  }
+`
+
+// theme 적용하기 
+// 먼저 main.jsx에서 ThemeProvider를 설정해주어야한다.
+const Title = styled.h1`
+  background-color: ${(props)=>props.theme.bgColor};
+  color: ${(props)=>props.theme.textColor};
+`
+
+export default function App() {
+  return (
+    <Header>
+      <Square bg_color='teal'>
+        <Text>Hello</Text>
+      </Square>
+      <Square bg_color='tomato'/>
+      <Circle bg_color='orange'/>
+      <Button bg_color='teal'>Click</Button>
+      <Button bg_color='tomato'as='a' href='https://naver.com'>Go to Naver</Button>
+      <Input/>
+      <SmileBox bg_color='teal'>
+        <span>☺️</span>
+        <Count as='p'>30</Count>
+      </SmileBox>
+      <Title>hello</Title>
+    </Header>
+  )
+}
+```
+---
+## #3 TYPESCRIPT
+### 3.1 Definitely Typed
+- 새로운 프로젝트를 시작할 경우
+  - `npx create-react-app 프로젝트명 --template typescript`
+  - 그냥 `npm init vite`에서 Typescript 선택해도 될듯
+- 진행중인 프로젝트에 설치할 경우 
+  - `npm i --save typescript @types/node @types/react @types/react-dom @types/jest`
+- ts에서 js로 만들어진 library를 설치할 때
+  - `npm i --svae-dev @types/라이브러리`
+- 진행중인 프로젝트를 vite로 만들었을 경우
+  - `npm i --save typescript @types/node @types/react @types/react-dom @types/jest`
+  - `rpx tsc --init`
+  - tsconfig.json의 "compilerOptions" 내부에 `"jsx":"react-jsx"` 추가
+  - 모든 파일 확장자를 tsx로 변경
+  - main.tsx에서 `createRoot(document.getElementById('root')).render(` 이부분을
+    `createRoot(document.getElementById('root')!).render(` 이렇게 교체 (!만 추가)
+---
+### 3.2 Typing the Props
+- PropTypes는 코드를 실행한 '후'에만 오류 확인이 가능하나
+  TypeScript는 코드를 실행 '전'에 오류 확인이 가능하다.
+- Component의 props를 type 하는 방법
+  - interface는 object 내부의 type을 설명해주는것
+    ```tsx
+    interface ComponentProps {
+      text: string;
+    }
+    export default Component({text}) {
+      return ( 
+        <div>{text}</div>
+      )
+    }
+    ```
+- styled-component의 prop을 type 하는 방법 (꺽쇠 사용)
+  ```tsx
+  interface ButtonProps {
+    fontSize:string
+  }
+  const Button = styled.button<ButtonProps>`
+    color:${props=>props.textColor}
+  `
+  export default App() {
+    return <Button textColor='tomato'>Click Me</Button>
+  }
+  ```
+---
