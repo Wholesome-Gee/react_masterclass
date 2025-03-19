@@ -251,3 +251,54 @@ export default function App() {
     )
   }
   ```
+  ---
+### 2.3 'As' and Attrs
+- as 속성으로 styled-component의 html 태그를 변경할 수 있다.
+- styled-component의 속성에 as='html태그'를 추가하면 해당 styled-component의 html태그가 변경됨.
+  ```js
+
+  import styled from 'styled-components'
+
+  const Button = styled.button`
+    background-color: ${(props)=>props.bg_color};
+    color: white;
+    width: 100px;
+  `
+
+  function App() {
+    return (
+      <>
+        <Button bg_color='teal'>Click</Button>
+        <Button bg_color='tomato' as='a' href='https://naver.com'>
+          Naver
+        </Button>
+      </>
+    )
+  }
+
+  export default App
+  ```
+- attrs를 사용하여 styled-component에 속성을 추가할 수 있다.
+  ```js
+  import styled from 'styled-components'
+
+  const Input = styled.input.attrs({required:true})`
+    width:100px;
+    background-color: beige;
+  `
+
+  function App() {
+    return (
+      <>
+        <Input/>
+        <Input/>
+        <Input/>
+        <Input/>
+        <Input/>
+        <Input/>
+      </>
+    )
+  }
+
+  export default App
+  ```
