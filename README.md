@@ -578,14 +578,70 @@ export default function App() {
     ```
 - styled-component의 prop을 type 하는 방법 (꺽쇠 사용)
   ```tsx
-  interface ButtonProps {
-    fontSize:string
+  interface HelloProps {
+    color:string
   }
-  const Button = styled.button<ButtonProps>`
-    color:${props=>props.textColor}
+  const Hello = styled.h1<HelloProps>`
+    color:${props=>props.color}
   `
   export default App() {
-    return <Button textColor='tomato'>Click Me</Button>
+    return <Hello color='tomato'/>
   }
   ```
 ---
+### 3.3 Optional Props
+props의 type에 옵셔널, 기본값 설정하기
+- 옵셔널 설정은 ? 로 한다.
+  ```tsx
+  interface HelloProps {
+    color?:string;
+    // color가 없을 시 undefined를 반환
+    // color : string | undefined 와 같다.
+  }
+  ```
+- 기본값 설정은 ?? 혹은 argument로 설정 가능하다.
+  - ?? 를 사용한 기본값 설정
+    ```tsx
+    // App.tsx
+    export default App () {
+      return (
+        <Hello/>
+      )
+    }
+    // Hello.tsx
+    interface HelloProps {
+      color?: string;
+    }
+    export default Hello ({color}:HelloProps) {
+      interface ShowHelloProps {
+        color: string;
+      }
+      const ShowHello = styled.h1<ShowHelloProps>`
+        color: ${props=>props.color}
+      `
+      return <ShowHello color={color ?? 'red'}>
+    }
+    ```
+  - argument를 사용한 기본값 설정
+    ```tsx
+    // App.tsx
+    export default App () {
+      return (
+        <Hello/>
+      )
+    }
+    // Hello.tsx
+    interface HelloProps {
+      color?: string;
+    }
+    export default Hello ({color='red'}:HelloProps) {
+      interface ShowHelloProps {
+        color: string;
+      }
+      const ShowHello = styled.h1<ShowHelloProps>`
+        color: ${props=>props.color}
+      `
+      return <ShowHello>
+    }
+    ```
+--- 
