@@ -653,3 +653,8 @@ state를 type하는 방법
   `const [value, setValue] = useState<number|string>(1)`  
   이와 같이 지정해줄 수 있다.
 - 초기값을 설정안하면 undefined type이 된다.
+### 3.5 Form (event)
+이벤트리스너의 event에 type하는 방법
+- `const onChange = (event:React.FormEvent<HTMLInputElement>) => { ... }`
+  - input에 이벤트리스너를 걸었으면 HTMLInputElement,   
+    form에 이벤트리스너를 걸었으면 HTMLFormElement
