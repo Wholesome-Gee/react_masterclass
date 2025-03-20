@@ -715,3 +715,158 @@ Themes(다크모드, 라이트모드)를 typeScript로 설정하는방법
       color: ${props=>props.theme.textColor};
     `
     ```
+---
+### 코드정리
+```tsx
+// /tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+  }
+}
+
+// /src/styled.d.ts
+import 'styled-components';
+
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    textColor: string;
+    bgColor: string;
+    btnColor: string;
+  }
+}
+
+// /src/theme.ts
+import { DefaultTheme } from "styled-components";
+
+export const lightTheme:DefaultTheme = {
+  textColor: "#333",
+  bgColor: "#eee",
+  btnColor: "tomato"
+}
+
+export const darkTheme:DefaultTheme = {
+  textColor: "#eee",
+  bgColor: "#333",
+  btnColor: "teal"
+}
+
+// /src/main.tsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App'
+import { ThemeProvider } from 'styled-components'
+import { darkTheme, lightTheme } from './theme'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ThemeProvider theme={lightTheme}>
+      <App />
+    </ThemeProvider>
+  </StrictMode>,
+)
+
+// /src/App.tsx
+import { useState } from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  background-color: ${props=>props.theme.bgColor}
+`
+const Button = styled.button`
+  background-color: ${props=>props.theme.btnColor};
+  color: ${props=>props.theme.textColor}
+`
+
+export default function App() {
+  const [value, setValue] = useState('')
+
+  function onChange(event:React.FormEvent<HTMLInputElement>) {
+    setValue(event.currentTarget.value);
+  }
+  function onSubmit (event:React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log('hello ',value);
+  }
+
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input value={value} onChange={onChange} type="text" placeholder='username' />
+        <button>Log in</button>
+      </form>
+      <Container>
+        <Button>hello</Button>
+      </Container>
+    </div>
+  )
+}
+```
+---
+## #4
+---
+## #5 CRYPTO TRACKER
+### 5.0
+- 해당 강의를 원활하게 듣기 위해 `npm i react-router-dom@5.3.4` 설치  
+- react-query 설치 `npm i react-query`
+  - react-query는 fetch 대신 더욱 편하게 데이터를 요청하는 방법  
+  - react-query를 사용하기위해선 react 버전을 18버전이하로 맞춰야함
+    - `npm i react@18 react-dom@18`
+  - 혹은 react-query를 최신버전으로 설치해도 되지만 본 강연을 원활하게 듣기 위해 리액트 버전 다운그레이드를 진행함.
+    - `react-query@latest`
+- react-router-dom 구버전으로 routing 하는 방법
+  1. src에 routes폴더 생성
+      - src/routes/Coins.tsx
+      - src/routes/Coin.tsx
+  2. src에 Router.tsx 파일 생성
+      - BrowserRouter, Switch(=Routes), Route를 import
+      ```tsx
+      import { BrowserRouter, Switch, Route } from 'react-router-dom';
+      import Coin from './routes/Coin';
+      import Coins from './routes/Coins';
+      function Router() {
+        return (
+          <BrowserRouter>
+            <Switch>
+              <Route path='/:coinId'>
+                <Coin/>
+              </Route>
+              <Route path='/'>
+                <Coins/>
+              </Route>
+            </Switch>
+          </BrowserRouter>
+        )
+      }
+    
+      export default Router
+      ```
+  3. App.tsx에서 `<Router></Router>` 호출
+      ```tsx
+      import Router from "./Router"
+
+      function App() {
+        return (
+          <Router/>
+        )
+      }
+
+      export default App
+      ```
+- useParams로 받아온 Route Parameter에 type하는 방법
+  ```tsx
+  interface RouteParams { 
+    id:string;
+  }
+  export default Component () {
+    const {id} = useParams<RouteParams>()
+    return <div>{id}</div>
+  }
+---
