@@ -813,7 +813,7 @@ export default function App() {
 ## #4
 ---
 ## #5 CRYPTO TRACKER
-### 5.0
+### 5.0 Setup
 - 해당 강의를 원활하게 듣기 위해 `npm i react-router-dom@5.3.4` 설치  
 - react-query 설치 `npm i react-query`
   - react-query는 fetch 대신 더욱 편하게 데이터를 요청하는 방법  
@@ -869,4 +869,113 @@ export default function App() {
     const {id} = useParams<RouteParams>()
     return <div>{id}</div>
   }
+---
+### 5.1 Global Styles
+styled-component 사용 시 글로벌CSS (reset 등)설정하는 방법
+- App.tsx에서 `const GlobalStyles = createGlobalStyles`` `
+- 백틱 내부에 reset css 작성
+- return 에 fragment 태그를 이용하여 Router와 같이 GlobalStyles 컴포넌트 작성
+  ```tsx
+  return (
+    <>
+      <Router/>
+      <GlobalStyles/>
+    </>
+  )
+    const GlobalStyle = createGlobalStyle`
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,  figure, figcaption, footer, header, hgroup,  menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    	margin: 0;
+    	padding: 0;
+    	border: 0;
+    	font-size: 100%;
+    	font: inherit;
+    	vertical-align: baseline;
+    }
+    article, aside, details, figcaption, figure,  footer, header, hgroup, menu, nav, section {
+    	display: block;
+    }
+    body {
+      ine-height: 1;
+      font-family: "Source Sans 3", sans-serif;
+    }
+    ol, ul {
+    	list-style: none;
+    }
+    blockquote, q {
+    	quotes: none;
+    }
+    blockquote:before, blockquote:after, q:before, q:after {
+    	content: '';
+    	content: none;
+    }
+    table {
+    	border-collapse: collapse;
+    	border-spacing: 0;
+    }
+    a {
+      text-decoration: none;
+    }
+    * {
+      box-sizing: border-box;
+    }
+  `
+  ```
+
+다시보는 theme 설정  
+1. src/styled.d.ts 로 ts에게 styled-component 모듈의 인터페이스를 추가 정의해줌 (기존 styled-component에 덮어쓰기개념)
+    ```tsx  
+    import 'styled-components';
+
+    declare module 'styled-components' {
+      export interface DefaultTheme {
+        textColor: string;
+        bgColor: string;
+        pointColor: string;
+      }
+    }
+    ``` 
+2. src/theme.ts에 theme 정의
+    ```tsx
+    import { DefaultTheme } from "styled-components";
+
+    export const lightTheme:DefaultTheme = {
+      textColor: "#2f3640",
+      bgColor: "#f5f6fa",
+      pointColor: "#005599"
+    }
+
+    export const darkTheme:DefaultTheme = {
+      textColor: "#f5f6fa",
+      bgColor: "#2f3640",
+      pointColor: "#44bd32"
+    }
+    ```
+3. createGlobalStyles에 정의 
+    ```tsx
+    import { createGlobalStyle } from "styled-components"
+    import Router from "./Router"
+
+    function App() {
+      return (
+        <>
+          <GlobalStyle />
+          <Router/>
+        </>
+      )
+    }
+
+    export default App
+
+    const GlobalStyle = createGlobalStyle`
+      ...
+      body {
+        ine-height: 1;
+        font-family: "Source Sans 3", sans-serif;
+        background-color: ${props=>props.theme.bgColor};
+        color: ${props=>props.theme.textColor};
+      }
+
+    `
+    ```
 ---
