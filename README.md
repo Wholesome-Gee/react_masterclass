@@ -979,3 +979,20 @@ styled-component 사용 시 글로벌CSS (reset 등)설정하는 방법
     `
     ```
 ---
+### 5.5 Coin Data
+컴포넌트의 state를  Link태그로 다른 컴포넌트에게 전달하는 방법
+  ```tsx
+  <Link to={{
+    pathname: '/other-component',
+    state: { name: "Gee" }
+  }}>
+  ```
+  ```tsx
+  // other-component
+  interface LocationInterface { name: string; }
+  const location = useLocation<RouteLocation>()
+  console.log(location.state); // { name: "Gee" }
+  ```
+---
+
+작성전 커밋하기
