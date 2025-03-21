@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { fetchCoins } from "../api"
 
 const Container = styled.div`
   padding: 0 20px;
@@ -42,12 +44,8 @@ const Img = styled.img`
   margin-right: 15px;
 `
 
-const CoinName = styled.span`
-  margin-left: 10px;
-`
-
 // id, name, symbol, rank, is_new, is_active, type
-interface CoinInterface {
+interface ICoins {
   id: string,
   name: string,
   symbol: string,
@@ -59,50 +57,37 @@ interface CoinInterface {
 
 
 export default function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([])
-  const [loading, setLoading] = useState(true)
+  const { isLoading, data } = useQuery<ICoins[]>('allCoins',fetchCoins)
 
-  async function fetchCoins() {
-    const response = await(await fetch('https://api.coinpaprika.com/v1/coins')).json()
-    const data = response.slice(0,100)
-    setCoins(data)
-    setLoading(false)
-  }
-
-  useEffect(()=>{
-    fetchCoins()
-  },[])
-  
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
       </Header>
-      <CoinsList>
         {
-          loading 
+          isLoading 
           ?
           <Loading>Loading...</Loading>
           :
-          coins.map((coin)=>{
-            return (
-              <Link 
-                to={{
-                  pathname: `/${coin.id}`,
-                  state: {name:coin.name}
-                }}
-                key={coin.id}
-              >
-                <Coin key={coin.id}>
+          <CoinsList>
+            {data?.slice(0,100).map((coin)=>{
+              return (
+                <Link 
+                  to={{
+                    pathname: `/${coin.id}`,
+                    state: {name:coin.name}
+                  }}
+                  key={coin.id}
+                >
+                  <Coin key={coin.id}>
                     <Img src={`https://cryptoicon-api.pages.dev/icons/128/color/${coin.symbol.toLowerCase()}.png`}/>
-                    {coin.name} &rarr;
-                </Coin>
-              </Link>
-            )
-          })
+                      {coin.name} &rarr;
+                  </Coin>
+                </Link>
+              ) 
+            })}
+          </CoinsList>
         }
-        
-      </CoinsList>
     </Container>
   )
 }

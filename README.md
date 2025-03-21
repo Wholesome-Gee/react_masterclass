@@ -1035,3 +1035,44 @@ state에 따른 style-component의 style을 변화하고 싶을때
     )
   }
   ```
+---
+react-query
+  - react query는 비동기 처리에 유용한 라이브러리
+  - react query는 데이터를 fetch한 뒤 캐시에 저장해준다.
+  - react query는 isLoading, data, error 등을 리턴한다.
+  - 사용법
+    1. `npm i react-query`
+    2. main.tsx에 QueryClientProvider 추가
+        ```tsx
+        //main.tsx
+        import { QueryClient, QueryClientProvider } from 'react-query'
+
+        const queryClient = new QueryClient()
+    
+        createRoot(document.getElementById('root')!).render(
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={darkTheme}>
+              <App />
+            </ThemeProvider>
+          </QueryClientProvider>
+        )
+        ```
+    3. src/api.tsx에 비동기 fetch 함수 작성
+        ```tsx
+        export function fetchData() {
+          return fetch('url').then(response=>response.json())
+        }
+        ```
+    4. Component에서 useQuery를 활용하여 데이터 받아오기
+        ```tsx
+        import { useQuery } from "react-query"
+        import { fetchData } from "../api"
+
+        interface IData {
+          id: string,
+        }
+
+        export default function Component () {
+          const { isLoading, data, error } = useQuery<IData[]>('allData',fetchData)
+          console.log(isLoading, data, error);
+        }
