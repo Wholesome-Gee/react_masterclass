@@ -6,9 +6,9 @@ import { ThemeProvider } from 'styled-components'
 import { darkTheme, lightTheme } from './theme'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <ThemeProvider theme={darkTheme}>
       <App />
     </ThemeProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )

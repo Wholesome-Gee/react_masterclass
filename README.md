@@ -981,6 +981,7 @@ styled-component 사용 시 글로벌CSS (reset 등)설정하는 방법
 ---
 ### 5.5 Coin Data
 컴포넌트의 state를  Link태그로 다른 컴포넌트에게 전달하는 방법
+- React Router를 사용할 떄 페이지간에 상태를 전달할 떄 사용 
   ```tsx
   <Link to={{
     pathname: '/other-component',
@@ -994,5 +995,14 @@ styled-component 사용 시 글로벌CSS (reset 등)설정하는 방법
   console.log(location.state); // { name: "Gee" }
   ```
 ---
+### 5.6 Data Types
+받아온 데이터를 type하는 방법
+1. console에 받아온 데이터를 출력한다. ex) console.log(response)
+2. console에서 response를 우클릭 후 '전역변수로 저장'을 클릭하면 temp1 에 response가 새롭게 저장된다.
+3. Object.keys(temp1).join() 으로 key들을 배열로 만들어준 후, join()을 사용해 하나의 문자열로 만들어준다.
+4. 문자열을 복사하여 Interface안에 붙혀넣기 하고 ''와 , 를 제거하여 key 형태로 만든다 ex) id:;
+5. Object.values(temp1).map(value => typeof value).join() 으로 values들의 타입을 배열로 만들고, join()을 사용해 하나의 문자열로 만들어준다.
 
-작성전 커밋하기
+interface 정의할 때 CoinInformation 이라고 해도 되지만 ICoin으로 이름을 정의하는 개발자들도 많다.
+---
+
