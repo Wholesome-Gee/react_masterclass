@@ -55,14 +55,14 @@ const Tabs = styled.div`
   gap: 10px;
 `
 
-const Tab = styled.span<{isActive: boolean}>`
+const Tab = styled.span<{active: string}>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
   background-color: rgba(0,0,0,0.5);
   padding: 7px 0;
   border-radius: 10px;
-  color: ${props => props.isActive ? props.theme.pointColor : props.theme.textColor };
+  color: ${props => props.active==='true' ? props.theme.pointColor : props.theme.textColor };
   a {
     display: block;
   }
@@ -178,25 +178,25 @@ function Coin() {
               </OverviewItem> 
             </Overview>
             <Tabs>
-              <Tab isActive={priceMatch !== null}>
-                <Link to={{
-                  pathname: `/${coinId}/price`
-                }}>Price
-                </Link>
-              </Tab>
-              <Tab isActive={chartMatch !== null}>
+              <Tab active={`${chartMatch !== null}`}>
                 <Link to={{
                   pathname: `/${coinId}/chart`
                 }}>Chart
                 </Link>
               </Tab>
+              <Tab active={`${priceMatch !== null}`}>
+                <Link to={{
+                  pathname: `/${coinId}/price`
+                }}>Price
+                </Link>
+              </Tab>
             </Tabs>
               <Switch>
-                <Route path={`/${coinId}/price`}>
+                <Route path={`/:coinId/price`}>
                   <Price></Price>
                 </Route>
-                <Route path={`/${coinId}/chart`}>
-                  <Chart></Chart>
+                <Route path={`/:coinId/chart`}>
+                  <Chart coinId={coinId}></Chart>
                 </Route>
               </Switch>
           </>

@@ -1089,6 +1089,75 @@ export function fetchCoinInfo(coinId:string) {
           .then(response=>response.json())
 }
 
-// 이제 const [ isLoading, data ] = useQuery<IData>(['coinInfo',coinId],()=>{fetchCoinInfo(coinId)}) 를 통해 parameter를 전달할 수 있다.
+// 이제 const { isLoading, data } = useQuery<IData>(['coinInfo',coinId],()=>{fetchCoinInfo(coinId)}) 를 통해 parameter를 전달할 수 있다.
 ```
 ---
+###
+APEXCHARTS.JS로 차트 쉽게 구현하기  
+`npm install apexcharts react-apexcharts`  
+`import ApexCharts from 'react-apexcharts'`  
+자세한건 apexcharts.js 공식문서 참조
+```tsx
+<ApexCharts 
+  type="line" 
+  series={[
+      {
+        name: 'Price',
+        data: data?.slice(7,21).map((item)=>parseFloat(item.close))??[]
+      }
+  ]}
+  options={{
+    theme:{
+      mode: 'dark'
+    },
+    chart: {
+      width: '100%',
+      height: '500px',
+      background:'transparent',
+      toolbar: {
+        show: false,
+      }, 
+    },
+    grid: {
+      show: false
+    },
+    yaxis: {
+      show: false
+    },
+    xaxis: {
+      categories: data?.map(item=>{
+        const date = new Date(item.time_close*1000);
+        const year = date.getFullYear()
+        const month = (date.getMonth()+1).toString().padStart(2,'0')
+        const day = date.getDate().toString().padStart(2,'0')
+        return `${year}-${month}-${day}`
+      }),
+      axisBorder: { 
+        show: false 
+      },
+      axisTicks: { 
+        show: false 
+      },
+      labels: {
+        show: false
+      }
+    },
+    stroke: {
+      curve: "smooth",
+      width: 5
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        gradientToColors:['#0be881'], stops:[0,100]
+      }
+    },
+    colors: ['#0fbcf9'],
+    tooltip: {
+      y: {
+        formatter: (value)=>`$${value.toFixed(2)}`
+      }
+    }
+  }}
+          />
+```

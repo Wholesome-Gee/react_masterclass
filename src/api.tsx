@@ -9,3 +9,7 @@ export function fetchCoinInfo(coinId:string) {
 export function fetchCoinPrice(coinId:string) {
   return fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`).then(response=>response.json())
 }
+
+export function fetchCoinHistory(coinId:string) {
+  return fetch('https://ohlcv-api.nomadcoders.workers.dev?coinId='+coinId).then(response => response.json())
+}
