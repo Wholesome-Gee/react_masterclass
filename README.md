@@ -1036,6 +1036,7 @@ state에 따른 style-component의 style을 변화하고 싶을때
   }
   ```
 ---
+### 5.9 React-Query part One
 react-query
   - react query는 비동기 처리에 유용한 라이브러리
   - react query는 데이터를 fetch한 뒤 캐시에 저장해준다.
@@ -1073,6 +1074,21 @@ react-query
         }
 
         export default function Component () {
+          // query의 고유 key(coinId)가 중복될 경우 key를 [priceInfo,coinId], [coinInfo,coinId] 이런식으로 써도 된다.
           const { isLoading, data, error } = useQuery<IData[]>('allData',fetchData)
           console.log(isLoading, data, error);
         }
+        ```
+---
+### 5.10 React Query part Two
+react-query의 callback함수를 api.tsx에 정의할 때,  
+callback함수에 parameter를 설정할 수도 있다.
+```tsx
+export function fetchCoinInfo(coinId:string) {
+  return fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+          .then(response=>response.json())
+}
+
+// 이제 const [ isLoading, data ] = useQuery<IData>(['coinInfo',coinId],()=>{fetchCoinInfo(coinId)}) 를 통해 parameter를 전달할 수 있다.
+```
+---
