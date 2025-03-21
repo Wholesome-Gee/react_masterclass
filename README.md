@@ -334,9 +334,9 @@ export default function App() {
       )
     }
     ```
-- Psuedo Seclctors 사용하는 방법 ( 가상 요소 선택자 )
+- Pseudo Selectors 사용하는 방법 ( 가상 요소 선택자 )
   - nested 사용가능
-  - '&'를 이용해서 Psuedo Selectiors 사용가능
+  - '&'를 이용해서 Pseudo Selectors 사용가능
     ```js
     import styled from 'styled-components'
     const Count = styled.span`
@@ -578,6 +578,7 @@ export default function App() {
     }
     ```
 - styled-component의 prop을 type 하는 방법 (꺽쇠 사용)
+- styled-component를 type하는 방법
   ```tsx
   interface HelloProps {
     color:string
@@ -1002,7 +1003,35 @@ styled-component 사용 시 글로벌CSS (reset 등)설정하는 방법
 3. Object.keys(temp1).join() 으로 key들을 배열로 만들어준 후, join()을 사용해 하나의 문자열로 만들어준다.
 4. 문자열을 복사하여 Interface안에 붙혀넣기 하고 ''와 , 를 제거하여 key 형태로 만든다 ex) id:;
 5. Object.values(temp1).map(value => typeof value).join() 으로 values들의 타입을 배열로 만들고, join()을 사용해 하나의 문자열로 만들어준다.
+  - typeof value 를 하면 배열데이터도 object로 나오게 된다. 이 부분은 한번 더 체크를 해줘야 할것!
 
 interface 정의할 때 CoinInformation 이라고 해도 되지만 ICoin으로 이름을 정의하는 개발자들도 많다.
 ---
+### 5.8 Nested Routes part Two
+useRouteMatch(url)
+useRouteMatch(url)는 user의 현재 url이 (url)에 위치했는지 파악 후 일치여부, 경로 등을 리턴한다.
+```tsx
+const match = useRouteMatch('/')
+// {path: '/', url: '/', isExact: true, params: {…}}
+```
 
+state에 따른 style-component의 style을 변화하고 싶을때
+- ex) isActive가 true/false일때 글씨 색상이 변해야한다.
+  ```tsx
+  const Title = styled.h1<{isActive:boolean}>`
+    color: ${props=>props.isActive ? 'red' : 'blue'};
+  `
+  const Button = styled.button``
+  export default Component () {
+    const [isActive, setIsActive] = useState(false)
+    function onClickButton() {
+      setIsActive(!isActive)
+    }
+    return (
+      <>
+        <Title isActive={isActive}>Hello</Title>
+        <Button onClick={onClickButton}>Change isActive</Button>
+      </>
+    )
+  }
+  ```
