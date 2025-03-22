@@ -3,6 +3,8 @@ import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { fetchCoins } from "../api"
+import { useSetRecoilState } from "recoil"
+import { isDarkAtom } from "../atom"
 
 const Container = styled.div`
   padding: 0 20px;
@@ -60,13 +62,17 @@ interface IData {
 
 
 export default function Coins({}: ICoins) {
+  const setIsDark = useSetRecoilState(isDarkAtom)
   const { isLoading, data } = useQuery<IData[]>('allCoins',fetchCoins)
+  function onClickBtn () {
+    setIsDark(prev=>!prev)
+  }
 
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
-        <button>Change Theme</button>
+        <button onClick={onClickBtn}>Change Theme</button>
       </Header>
         {
           isLoading 

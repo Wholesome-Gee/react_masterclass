@@ -1178,7 +1178,7 @@ react-helmet은 react에서 html의 header부분에 들어간 tag들을 변경�
   3. `<Helmet><title> React title </title></Helmet>`
 
 ## #6 STATE MANAGEMENT
-### 6.0~6.1 Dark Mode
+### 6.0~6.2 Dark Mode
 **상태관리란?**   
 상태관리는 연쇄적으로 전달되는 props를 막기위한것.  
 state를 상태관리에 등록하여 모든 컴포넌트에서 참조가능하도록 한다.  
@@ -1194,7 +1194,7 @@ atom은 특정 컴포넌트에 종속되지 않고, 우리 프로그램 어딘�
 3. src 폴더내에 atom.tsx 파일 생성
     ```tsx
     import { atom } from "recoil";
-    
+
     export const isDarkAtom = atom({
       key:"isDark",
       default: false
@@ -1205,3 +1205,13 @@ atom은 특정 컴포넌트에 종속되지 않고, 우리 프로그램 어딘�
     ```tsx
     const isDark = useRecoilValue(isDarkAtom)
     ```
+---
+### 6.3 Introduction to Recoil Part.2
+**RECOIL의 ATOM의 STATE를 변경하는 방법 (useSetRecoilState(atom))**
+1. atom을 get하는 방법 = `useRecoilValue(atom)`
+2. atom을 set하는 방법 = `useSetRecoilState(atom)`
+    ```tsx
+    const setIsDark = useSetRecoilState(isDark)
+    function onClickBtn() { setIsDark((prev)=>!prev)  }
+    ```
+---
