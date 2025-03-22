@@ -3,7 +3,6 @@ import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { fetchCoins } from "../api"
-import { Helmet } from "react-helmet"
 
 const Container = styled.div`
   padding: 0 20px;
@@ -26,11 +25,12 @@ const Loading = styled.div`
 const CoinsList = styled.ul``
 
 const Coin = styled.li`
-  background-color: #eee;
-  color: ${props=>props.theme.bgColor};
+  background-color: ${props=> props.theme.cardBgColor};
+  color: ${props=>props.theme.textColor};
+  border: 1px solid;
+  border-radius: 15px;
   margin-bottom: 10px;
   padding: 20px;
-  border-radius: 15px;
   display: flex;
   align-items: center;
   &:hover {
@@ -45,8 +45,10 @@ const Img = styled.img`
   margin-right: 15px;
 `
 
-// id, name, symbol, rank, is_new, is_active, type
 interface ICoins {
+}
+// id, name, symbol, rank, is_new, is_active, type
+interface IData {
   id: string,
   name: string,
   symbol: string,
@@ -57,18 +59,14 @@ interface ICoins {
 }
 
 
-export default function Coins() {
-  const { isLoading, data } = useQuery<ICoins[]>('allCoins',fetchCoins)
+export default function Coins({}: ICoins) {
+  const { isLoading, data } = useQuery<IData[]>('allCoins',fetchCoins)
 
   return (
     <Container>
-      <Helmet>
-        <title>
-          Coins
-        </title>
-      </Helmet>
       <Header>
         <Title>Coins</Title>
+        <button>Change Theme</button>
       </Header>
         {
           isLoading 

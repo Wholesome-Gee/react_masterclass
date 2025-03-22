@@ -69,6 +69,8 @@ const Tab = styled.span<{active: string}>`
   }
 `
 
+interface ICoin {
+}
 interface RouteParams {
   coinId: string;
 }
@@ -133,7 +135,7 @@ interface IPriceInfo{
     }
   };
 }
-function Coin() {
+function Coin({}: ICoin) {
   const {coinId} = useParams<RouteParams>()
   const {state} = useLocation<RouteLocation>()
   const priceMatch = useRouteMatch(`/${coinId}/price`)
@@ -167,7 +169,7 @@ function Coin() {
               </OverviewItem>
               <OverviewItem>
                 <span>Price:</span>
-                <span>{priceData?.quotes.USD.price.toFixed(2)}</span>
+                <span>{priceData?.quotes?.USD?.price?.toFixed(3)}</span>
               </OverviewItem>
             </Overview>
             <Description>{infoData?.description}</Description>
