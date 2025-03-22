@@ -1092,7 +1092,7 @@ export function fetchCoinInfo(coinId:string) {
 // 이제 const { isLoading, data } = useQuery<IData>(['coinInfo',coinId],()=>{fetchCoinInfo(coinId)}) 를 통해 parameter를 전달할 수 있다.
 ```
 ---
-###
+### 5.13~5.14 Price Chart
 APEXCHARTS.JS로 차트 쉽게 구현하기  
 `npm install apexcharts react-apexcharts`  
 `import ApexCharts from 'react-apexcharts'`  
@@ -1161,3 +1161,20 @@ APEXCHARTS.JS로 차트 쉽게 구현하기
   }}
           />
 ```
+---
+### 5.16 Final Touches
+**useQuery()의 4가지 옵션**
+1. ['keyname', 'key']
+2. fetcher from api.tsx
+3. { refetchInterval: 5000 }
+  - 5000ms마다 refetch
+  - refetchInterval은 특정 시간마다 데이터를 refetch(재요청)하는 기능이다.
+
+**React-Helmet**  
+react-helmet은 react에서 html의 header부분에 들어간 tag들을 변경해준다
+- header의 title부분 변경해보기
+  1. `npm i react-helmet`
+  2. `npm i --save-dev @types/react-helmet`
+  3. `<Helmet><title> React title </title></Helmet>`
+
+

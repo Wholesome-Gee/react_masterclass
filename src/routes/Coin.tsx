@@ -5,6 +5,7 @@ import Price from "./Price"
 import Chart from "./Chart"
 import { useQuery } from "react-query"
 import { fetchCoinInfo, fetchCoinPrice } from "../api"
+import { Helmet } from "react-helmet"
 
 const Container = styled.div`
   padding: 0 20px;
@@ -112,7 +113,7 @@ interface IPriceInfo{
   last_updated: string;
   quotes: {
     USD: {
-      price: string;
+      price: number;
       volume_24h: number;
       volume_24h_change_24h: number;
       market_cap: number;
@@ -138,11 +139,14 @@ function Coin() {
   const priceMatch = useRouteMatch(`/${coinId}/price`)
   const chartMatch = useRouteMatch(`/${coinId}/chart`)
   const { isLoading: infoLoading, data: infoData , error: infoError } = useQuery<ICoinInfo>(["coinInfo",coinId], ()=> fetchCoinInfo(coinId))
-  const { isLoading: priceLoading, data: priceData , error: priceError } = useQuery<IPriceInfo>(["coinPrice",coinId], ()=> fetchCoinPrice(coinId))
+  const { isLoading: priceLoading, data: priceData , error: priceError } = useQuery<IPriceInfo>(["coinPrice",coinId], ()=> fetchCoinPrice(coinId),{ refetchInterval: 5000 })
   const isLoading = infoLoading || priceLoading
 
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : isLoading ? 'Loading' : infoData?.name }</title>
+      </Helmet>
       <Header>
         <Title>{state?.name ? state.name : isLoading ? 'Loading' : infoData?.name }</Title>
       </Header>
@@ -162,8 +166,8 @@ function Coin() {
                 <span>${infoData?.symbol}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Open Source:</span>
-                <span>{infoData?.open_source.toString().toUpperCase()}</span>
+                <span>Price:</span>
+                <span>{priceData?.quotes.USD.price.toFixed(2)}</span>
               </OverviewItem>
             </Overview>
             <Description>{infoData?.description}</Description>
